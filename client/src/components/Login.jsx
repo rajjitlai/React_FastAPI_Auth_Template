@@ -9,11 +9,13 @@ const Login = () => {
 
     const navigate = useNavigate()
 
+    Axios.defaults.withCredentials = true;
+
     const handleSubmit = (e) => {
         e.preventDefault()
         Axios.post('http://localhost:3000/auth/login', { email, password }).then(
             response => {
-                if(response.data.status){
+                if (response.data.status) {
                     navigate('/home')
                 }
             }
@@ -32,7 +34,7 @@ const Login = () => {
                 <input type="password" placeholder='********' onChange={(e) => setPassword(e.target.value)} />
 
                 <button type='submit'>Sign Up</button>
-                <p>No account? 
+                <p>No account?
                     <Link to="/signup">Signup</Link>
                 </p>
             </form>

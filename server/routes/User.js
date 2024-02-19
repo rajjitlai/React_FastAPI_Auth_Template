@@ -33,11 +33,14 @@ router.post('/login', async (req, res) => {
         return res.json({ message: "User is not registered" })
     }
     const validPassword = await bcrypt.compare(password, user.password)
-    if(!validPassword){
-        return res.json({message: "Incorrect Password"})
+    if (!validPassword) {
+        return res.json({ message: "Incorrect Password" })
     }
 
-    const token = jwt.sign({username: user.username}, )
+    const token = jwt.sign({ username: user.username }, process.env.SECRET_JWT, { expiresIn: '1h' })
+    res.cookie('token', token, { httpOnly: true, maxAge: 360000 })
+
+    return res.json({ status: true, message: "Login successfully" })
 })
 
 export { router as UserRouter }

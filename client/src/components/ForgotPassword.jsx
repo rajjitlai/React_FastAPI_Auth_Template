@@ -3,9 +3,8 @@ import "../main.css"
 import Axios from "axios"
 import { Link, useNavigate } from "react-router-dom"
 
-const Login = () => {
+const ForgotPassword = () => {
     const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
 
     const navigate = useNavigate()
 
@@ -13,10 +12,11 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        Axios.post('http://localhost:3000/auth/login', { email, password }).then(
+        Axios.post('http://localhost:3000/auth/forgot-password', { email }).then(
             response => {
                 if (response.data.status) {
-                    navigate('/home')
+                    alert("Check your email for reset password link")
+                    navigate('/login')
                 }
             }
         ).catch(err => {
@@ -27,20 +27,14 @@ const Login = () => {
     return (
         <div className='container'>
             <form className='sForm' onSubmit={handleSubmit}>
-                <h2>Log In</h2>
+                <h2>Forgot Password</h2>
                 <label htmlFor="email">Email</label>
                 <input type="email" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
-                <label htmlFor="password">Password</label>
-                <input type="password" placeholder='********' onChange={(e) => setPassword(e.target.value)} />
 
-                <button type='submit'>Login</button>
-                <Link to="/forgot-password">Forgot Password?</Link>
-                <p>No account?
-                    <Link to="/signup">Signup</Link>
-                </p>
+                <button type='submit'>Send link</button>
             </form>
         </div>
     )
 }
 
-export default Login
+export default ForgotPassword

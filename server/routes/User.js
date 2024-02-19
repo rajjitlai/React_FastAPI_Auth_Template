@@ -85,18 +85,21 @@ router.post('/forgot-password', async (req, res) => {
     }
 })
 
-router.post('/reset-password/:token', (req, res) => {
+router.post('/reset-password/:token', async (req, res) => {
     const token = req.params
 
-    const {password} = req.body
+    const { password } = req.body
 
-    try{
-        const decoded = jwt.verify(token, process.env.SECRET_JWT)
+    try {
+        const decoded = await jwt.verify(token, process.env.SECRET_JWT)
         const id = decoded.id
 
-        
-    }catch(err){
-        console.log(err)
+        const hashpassword = bcrypt.hash(password, 10)
+        await User.findByIdAndUpdate({ _id: id }, { password: hashpassword })
+
+        return res.json({ status: true, message: "password updated" })
+    } catch (err) {
+        return res.json("Invalid token")
     }
 })
 

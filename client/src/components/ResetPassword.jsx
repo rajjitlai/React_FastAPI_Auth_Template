@@ -6,7 +6,7 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 const ResetPassword = () => {
     const [password, setPassword] = useState('')
 
-    const {token} = useParams()
+    const { token } = useParams()
 
     const navigate = useNavigate()
 
@@ -14,9 +14,10 @@ const ResetPassword = () => {
         e.preventDefault()
         Axios.post('http://localhost:3000/auth/reset-password/' + token, { password }).then(
             response => {
-                if(response.data.status){
+                if (response.data.status) {
                     navigate('/login')
                 }
+                console.log(response.data)
             }
         ).catch(err => {
             console.log(err)

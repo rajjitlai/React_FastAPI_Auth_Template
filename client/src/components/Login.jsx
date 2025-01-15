@@ -16,11 +16,11 @@ const Login = () => {
       email,
       password,
     }).then(response => {
-        if(response.data.status) {
-            navigate('/')
-        }
+      if (response.data.status) {
+        navigate('/')
+      }
     }).catch(err => {
-        console.log(err)
+      console.log(err)
     })
   };
   return (
@@ -45,7 +45,7 @@ const Login = () => {
 
         <button type="submit">Login</button>
         <Link to="/forgotPassword">Forgot Password?</Link>
-        <p>Don't Have Account? <Link to="/signup">Sign Up</Link></p> 
+        <p>Don't Have Account? <Link to="/signup">Sign Up</Link></p>
       </form>
     </div>
   );

@@ -1,5 +1,5 @@
 import express from "express";
-import bcryt from "bcrypt";
+import bcrypt from "bcrypt";
 const router = express.Router();
 import { User } from "../models/User.js";
 import jwt from "jsonwebtoken";
@@ -12,7 +12,7 @@ router.post("/signup", async (req, res) => {
     return res.json({ message: "user already existed" });
   }
 
-  const hashpassword = await bcryt.hash(password, 10);
+  const hashpassword = await bcrypt.hash(password, 10);
   const newUser = new User({
     username,
     email,
@@ -20,7 +20,7 @@ router.post("/signup", async (req, res) => {
   });
 
   await newUser.save();
-  return res.json({ status: true, message: "record registed" });
+  return res.json({ status: true, message: "record registered" });
 });
 
 router.post("/login", async (req, res) => {
@@ -30,7 +30,7 @@ router.post("/login", async (req, res) => {
     return res.json({ message: "user is not registered" });
   }
 
-  const validPassword = await bcryt.compare(password, user.password);
+  const validPassword = await bcrypt.compare(password, user.password);
   if (!validPassword) {
     return res.json({ message: "password is incorrect" });
   }

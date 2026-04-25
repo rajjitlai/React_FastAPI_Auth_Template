@@ -6,20 +6,31 @@ const Home = () => {
   const navigate = useNavigate()
   axios.defaults.withCredentials = true;
   const handleLogout = () => {
-    axios.get('http://localhost:3000/auth/logout')
+    localStorage.removeItem("demo_user");
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/logout`)
     .then(res => {
       if(res.data.status) {
         navigate('/login')
       }
     }).catch(err => {
+      // Even if server is offline, we clear local demo state and redirect
+      navigate('/login')
       console.log(err)
     })
   }
   return (
-    <div>Home
-      <button><Link to="/dashboard" >Dashboard</Link></button>
-      <br /> <br />
-      <button onClick={handleLogout}>Logout</button>
+    <div className="home-container">
+      <div className="sign-up-form">
+        <h2>Welcome Home</h2>
+        <p>You are successfully logged in to the FastAPI + React Auth Template.</p>
+        <button><Link to="/dashboard" style={{color: 'inherit'}}>Go to Dashboard</Link></button>
+        <button 
+          onClick={handleLogout}
+          style={{background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff'}}
+        >
+          Logout
+        </button>
+      </div>
     </div>
   )
 }

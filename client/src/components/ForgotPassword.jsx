@@ -5,20 +5,25 @@ import { Link, useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState("");
+    const [error, setError] = useState("");
   
     const navigate = useNavigate()
   
     const handleSubmit = (e) => {
       e.preventDefault();
-      Axios.post("http://localhost:3000/auth/forgot-password", {
+      setError("");
+      Axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/forgot-password`, {
         email,
       }).then(response => {
           if(response.data.status) {
             alert("check you email for reset password link")
               navigate('/login')
+          } else {
+            setError(response.data.message);
           }
           
       }).catch(err => {
+          setError("An error occurred. Please try again.");
           console.log(err)
       })
     };
@@ -26,17 +31,20 @@ const ForgotPassword = () => {
     <div className="sign-up-container">
       <form className="sign-up-form" onSubmit={handleSubmit}>
         <h2>Forgot Password</h2>
+        {error && <div className="error-msg">{error}</div>}
         
+        <div className="form-group">
+          <label htmlFor="email">Email Address:</label>
+          <input
+            type="email"
+            autoComplete="off"
+            placeholder="Enter your email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
 
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          autoComplete="off"
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <button type="submit">Send</button>
+        <button type="submit">Send Reset Link</button>
+        <p><Link to="/login">Back to Login</Link></p>
       </form>
     </div>
   )

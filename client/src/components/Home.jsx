@@ -1,10 +1,26 @@
 import axios from 'axios'
-import React from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Home = () => {
   const navigate = useNavigate()
   axios.defaults.withCredentials = true;
+
+  useEffect(() => {
+    const isDemo = localStorage.getItem("demo_user") === "true";
+    if (isDemo) return;
+
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/verify`)
+    .then(res => {
+      if(!res.data.status) {
+        navigate('/login')
+      }
+    }).catch(err => {
+      navigate('/login')
+      console.log(err)
+    })
+  }, [])
+
   const handleLogout = () => {
     localStorage.removeItem("demo_user");
     axios.get(`${import.meta.env.VITE_API_BASE_URL}/auth/logout`)
